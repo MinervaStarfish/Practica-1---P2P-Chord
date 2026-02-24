@@ -196,4 +196,36 @@ successor(2) = 4
 DOC https://dl.acm.org/doi/epdf/10.1145/964723.383071
 
 
+PARTE C
 
+1 - 4 - 8 - 14 - 21 - 28
+
+Si se añade el nodo 18, busca su sucesor de la misma forma en que lo haria con una llave normal (partiendo de un nodo conocido, con closest preceding node), solo que ese sucesor no seria responsable de 18, solo nos daría la información de su ID.
+
+successor (18) = 21
+
+Tambien, 21 sabe que predecessor(21) = 14
+por lo que ahora, predecessor(18) = 14
+
+21 actualiza,  predecessor(21) = 18, con un notify(18)
+
+Hasta este punto, 14 no tiene informacion de su nuevo sucesor, esto se soluciona con stabilize(), que se ejecuta periodicamente,
+entonces se ejecuta stabilize(14),  A 21, que le devuelve su predecesor, como no es igual a 14, 14 actualiza su sucesor successor(14) = 18
+
+finger table de 18
+i   start-i  successor(start-i)
+
+1 19  21
+2 20  21
+3 22  28
+4 26  28
+5 2    4
+
+Hasta ahora, ningun finger de las demas finger tables apunta a 18, esto se va actualizando con fix_fingers(), que se ejecuta para cada entrada de cada finger table, y recalcula el finger para uno de los saltos.
+
+stabilize(n), pregunta a successor(n) cual es su predecesor, si es diferente que n, entonces successor(n) cambia.
+notify(n), n pregunta a successor(n), cual es su predecesor, si es diferente y n es mayor, entonces el predecesor de successor(n), cambia
+fix_fingers(), se ejecuta periodicamente y aleatoriamente, para un indice de cualqueir finger table de los nodos, y recalcula el finger para dicho salto, actualizando sus referencias
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PARTE D
